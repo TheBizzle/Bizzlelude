@@ -1,0 +1,10 @@
+*.exe
+*.dll
+*.hi
+*.log
+*.o
+
+/.ghci
+/.projections.json
+/.stack-work/
+/target/
