@@ -2,7 +2,7 @@ module Bizzlelude((|>), asPath, asString, asText, concat, error, groupOn, listDi
                  , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module Prelude, module Numeric, module System.IO.Error) where
 
 import Control.Arrow((&&&), (***), (>>>))
-import Control.Applicative(Applicative((<|>), (<*>), (<*), (*>), pure)
+import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
 import Control.Monad((>=>), filterM, foldM, foldM_, forM, forM_, guard, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
 
 import Data.Bifunctor(Bifunctor(bimap, first, second))
