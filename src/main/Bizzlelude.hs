@@ -1,12 +1,13 @@
-module Bizzlelude((|>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, scalaGroupBy, unsafeRead
-                 , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module Prelude, module Numeric, module System.IO.Error) where
+module Bizzlelude((|>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, scalaGroupBy, showText, unsafeRead
+                 , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module Prelude, module Numeric, module System.IO.Error) where
 
 import Control.Arrow((&&&), (***), (>>>))
-import Control.Applicative(Applicative((<*>), (<*), (*>), pure))
+import Control.Applicative(Applicative((<|>), (<*>), (<*), (*>), pure)
 import Control.Monad((>=>), filterM, foldM, foldM_, forM, forM_, guard, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
 
+import Data.Bifunctor(Bifunctor(bimap, first, second))
 import Data.Bool(Bool(False, True), (&&), (||), not, otherwise)
-import Data.Char(Char, digitToInt, intToDigit, toLower, toUpper)
+import Data.Char(Char, digitToInt, intToDigit)
 import Data.Either(Either(Left, Right), either, lefts, isLeft, isRight, partitionEithers, rights)
 import Data.Eq(Eq((==), (/=)))
 import Data.Foldable(Foldable(fold, foldMap, foldr, foldr', foldl, foldl', foldr1, foldl1, null, length, elem, maximum, minimum, sum, product), foldlM, for_, sequenceA_, and, or, any, all, maximumBy, minimumBy, find)
@@ -15,7 +16,7 @@ import Data.Functor((<$>), Functor(fmap))
 import Data.Int(Int, Int8, Int16, Int32, Int64)
 import Data.IntSet(IntSet)
 import Data.Map(Map)
-import Data.Maybe(fromMaybe, isJust, isNothing, maybe, Maybe(Just, Nothing))
+import Data.Maybe(catMaybes, fromMaybe, isJust, isNothing, maybe, Maybe(Just, Nothing))
 import Data.Monoid((<>), Monoid(mappend, mempty))
 import Data.Ord(Ord((<), (<=), (>), (>=), compare, max, min), Ordering(EQ, GT, LT))
 import Data.Set(Set)
@@ -26,7 +27,7 @@ import Debug.Trace(trace, traceEvent, traceEventIO, traceId, traceIO, traceM, tr
 
 import Numeric(Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh)
 
-import Prelude((^), Double, FilePath, Fractional((/), recip, fromRational), fromIntegral, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), IO, Num((+), (-), (*), abs, signum, fromInteger, negate), read, RealFrac(properFraction, truncate, round, ceiling, floor), seq, Show(show), subtract, String)
+import Prelude((^), Double, FilePath, Float, Fractional((/), recip, fromRational), fromIntegral, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), IO, Num((+), (-), (*), abs, signum, fromInteger, negate), read, RealFrac(properFraction, truncate, round, ceiling, floor), seq, Show(show), subtract, String, undefined)
 
 import System.IO.Error(IOError, ioError, userError)
 
@@ -52,6 +53,9 @@ asPath = asString
 
 asText :: Prelude.String -> Text
 asText = Text.pack
+
+showText :: Show a => a -> Text
+showText = show >>> asText
 
 concat :: (Foldable t, MonadPlus m) => t (m a) -> m a
 concat = Foldable.msum
