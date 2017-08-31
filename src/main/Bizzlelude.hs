@@ -1,5 +1,5 @@
 module Bizzlelude((|>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, scalaGroupBy, showText, unsafeRead
-                 , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module Prelude, module Numeric, module System.IO.Error) where
+                 , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module Prelude, module System.IO.Error) where
 
 import Control.Arrow((&&&), (***), (>>>))
 import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
@@ -25,9 +25,7 @@ import Data.Tuple(curry, fst, snd, swap, uncurry)
 
 import Debug.Trace(trace, traceEvent, traceEventIO, traceId, traceIO, traceM, traceMarker, traceMarkerIO, traceShow, traceShowId, traceShowM, traceStack)
 
-import Numeric(Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh)
-
-import Prelude((^), Double, FilePath, Float, Fractional((/), recip, fromRational), fromIntegral, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), IO, Num((+), (-), (*), abs, signum, fromInteger, negate), read, RealFrac(properFraction, truncate, round, ceiling, floor), seq, Show(show), subtract, String, undefined)
+import Prelude((^), Double, FilePath, Float, Fractional((/), recip, fromRational), fromIntegral, Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), IO, Num((+), (-), (*), abs, signum, fromInteger, negate), read, RealFrac(properFraction, truncate, round, ceiling, floor), seq, Show(show), subtract, String, undefined)
 
 import System.IO.Error(IOError, ioError, userError)
 
@@ -88,7 +86,7 @@ unsafeRead = DTR.decimal >>> (Either.either (error "Well, that read *was* unsafe
 listDirsRecursively :: FilePath -> IO [FilePath]
 listDirsRecursively filepath =
   do
-    paths    <- SD.listDirectory filepath
+    paths    <- SD.getDirectoryContents filepath
     dirs     <- paths |> ((map $ \x -> filepath <> "/" <> x) >>> (filterM SD.doesDirectoryExist))
     children <- mapM listDirsRecursively dirs
     return $ dirs <> (concat children)
