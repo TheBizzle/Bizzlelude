@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (&>), (&>=), (>>>), (>=>), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5) where
+module Misc((|>), (&>), (&>=), (>>>), (>=>), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, uncurry5) where
 
 import External
 
@@ -15,7 +15,6 @@ import qualified Data.Text        as Text
 import qualified Data.Text.IO     as TIO
 import qualified Data.Text.Read   as DTR
 import qualified GHC.Err          as Err
-import qualified System.Directory as SD
 import qualified System.IO        as SIO
 
 (|>) :: a -> (a -> b) -> b
@@ -90,14 +89,6 @@ traceLabel label a = traceShow (label <> ": " <> (showText a)) a
 
 unsafeRead :: Integral a => Text -> a
 unsafeRead = DTR.decimal &> (Either.either (error "Well, that read *was* unsafe...") id) &> fst
-
-listDirsRecursively :: FilePath -> IO [FilePath]
-listDirsRecursively filepath =
-  do
-    paths    <- SD.listDirectory filepath
-    dirs     <- paths |> ((map $ \x -> filepath <> "/" <> x) &> (filterM SD.doesDirectoryExist))
-    children <- mapM listDirsRecursively dirs
-    return $ dirs <> (concat children)
 
 uncurry5 :: (a -> b -> c -> d -> e -> f) -> ((a, b, c, d, e) -> f)
 uncurry5 f (a, b, c, d, e) = f a b c d e
