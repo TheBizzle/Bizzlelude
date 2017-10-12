@@ -1,9 +1,9 @@
-module Bizzlelude((|>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, scalaGroupBy, showText, unsafeRead
+module Bizzlelude((|>), (<&>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, return', scalaGroupBy, showText, uncurry3, uncurry4, uncurry5, unsafeRead
                  , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module Prelude, module System.IO.Error) where
 
 import Control.Arrow((&&&), (***), (>>>))
 import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
-import Control.Monad((>=>), filterM, foldM, foldM_, forM, forM_, guard, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
+import Control.Monad((>=>), filterM, foldM, foldM_, forM, forM_, guard, join, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
 
 import Data.Bifunctor(Bifunctor(bimap, first, second))
 import Data.Bool(Bool(False, True), (&&), (||), not, otherwise)
@@ -12,7 +12,7 @@ import Data.Either(Either(Left, Right), either, lefts, isLeft, isRight, partitio
 import Data.Eq(Eq((==), (/=)))
 import Data.Foldable(Foldable(fold, foldMap, foldr, foldr', foldl, foldl', foldr1, foldl1, null, length, elem, maximum, minimum, sum, product), foldlM, for_, sequenceA_, and, or, any, all, maximumBy, minimumBy, find)
 import Data.Function(($), (.), const, flip, id, on)
-import Data.Functor((<$>), Functor(fmap))
+import Data.Functor((<$), (<$>), ($>), Functor(fmap), void)
 import Data.Int(Int, Int8, Int16, Int32, Int64)
 import Data.IntSet(IntSet)
 import Data.Map(Map)
@@ -25,7 +25,7 @@ import Data.Tuple(curry, fst, snd, swap, uncurry)
 
 import Debug.Trace(trace, traceEvent, traceEventIO, traceId, traceIO, traceM, traceMarker, traceMarkerIO, traceShow, traceShowId, traceShowM, traceStack)
 
-import Prelude((^), Double, FilePath, Float, Fractional((/), recip, fromRational), fromIntegral, Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), IO, Num((+), (-), (*), abs, signum, fromInteger, negate), read, RealFrac(properFraction, truncate, round, ceiling, floor), seq, Show(show), subtract, String, undefined)
+import Prelude((^), ($!), Double, FilePath, Float, Fractional((/), recip, fromRational), fromIntegral, Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), Integer, IO, Num((+), (-), (*), abs, signum, fromInteger, negate), read, RealFrac(properFraction, truncate, round, ceiling, floor), seq, Show(show), subtract, String, undefined)
 
 import System.IO.Error(IOError, ioError, userError)
 
@@ -64,11 +64,17 @@ error = asString >>> Prelude.error
 map :: (Prelude.Functor f) => (a -> b) -> f a -> f b
 map = Prelude.fmap
 
+(<&>) :: Functor f => f a -> (a -> b) -> f b
+(<&>) = flip map
+
 groupOn :: Ord criterion => (item -> criterion) -> [item] -> [[item]]
 groupOn f = sort >>> group
   where
     sort  = List.sortBy (compare `on` f)
     group = List.groupBy ((==) `on` f)
+
+return' :: (Monad m) => a -> m a
+return' = (return $!)
 
 scalaGroupBy :: Ord criterion => (item -> criterion) -> [item] -> [(criterion, [item])]
 scalaGroupBy f = (groupOn f) >>> pair
@@ -90,3 +96,12 @@ listDirsRecursively filepath =
     dirs     <- paths |> ((map $ \x -> filepath <> "/" <> x) >>> (filterM SD.doesDirectoryExist))
     children <- mapM listDirsRecursively dirs
     return $ dirs <> (concat children)
+
+uncurry3 :: (a -> b -> c -> d) -> ((a, b, c) -> d)
+uncurry3 f (a, b, c) = f a b c
+
+uncurry4 :: (a -> b -> c -> d -> e) -> ((a, b, c, d) -> e)
+uncurry4 f (a, b, c, d) = f a b c d
+
+uncurry5 :: (a -> b -> c -> d -> e -> f) -> ((a, b, c, d, e) -> f)
+uncurry5 f (a, b, c, d, e) = f a b c d e
