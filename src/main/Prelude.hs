@@ -1,4 +1,4 @@
-module Prelude((|>), (<&>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, return', scalaGroupBy, showText, uncurry3, uncurry4, uncurry5, unsafeRead
+module Prelude((|>), (<&>), asPath, asString, asText, concat, error, groupOn, map, putStrFlush, return', scalaGroupBy, showText, uncurry3, uncurry4, uncurry5, unsafeRead
               , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module System.IO.Error, module Text.Read) where
 
 import Control.Arrow((&&&), (***), (>>>))
@@ -44,7 +44,6 @@ import qualified Data.Text        as Text
 import qualified Data.Text.IO     as TIO
 import qualified Data.Text.Read   as DTR
 import qualified GHC.Err          as Err
-import qualified System.Directory as SD
 import qualified System.IO        as SIO
 
 (|>) :: a -> (a -> b) -> b
@@ -95,14 +94,6 @@ putStrFlush x = (TIO.putStr x) >>= (const $ SIO.hFlush SIO.stdout)
 
 unsafeRead :: Integral a => Text -> a
 unsafeRead = DTR.decimal >>> (Either.either (error "Well, that read *was* unsafe...") id) >>> fst
-
-listDirsRecursively :: FilePath -> IO [FilePath]
-listDirsRecursively filepath =
-  do
-    paths    <- SD.getDirectoryContents filepath
-    dirs     <- paths |> ((map $ \x -> filepath <> "/" <> x) >>> (filterM SD.doesDirectoryExist))
-    children <- mapM listDirsRecursively dirs
-    return $ dirs <> (concat children)
 
 uncurry3 :: (a -> b -> c -> d) -> ((a, b, c) -> d)
 uncurry3 f (a, b, c) = f a b c
