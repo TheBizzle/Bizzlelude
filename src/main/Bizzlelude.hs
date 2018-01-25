@@ -1,5 +1,5 @@
 module Bizzlelude((|>), (<&>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, return', scalaGroupBy, showText, uncurry3, uncurry4, uncurry5, unsafeRead
-                 , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module Prelude, module System.IO.Error) where
+                 , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module System.IO.Error, module Text.Read) where
 
 import Control.Arrow((&&&), (***), (>>>))
 import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
@@ -25,11 +25,17 @@ import Data.Tuple(curry, fst, snd, swap, uncurry)
 
 import Debug.Trace(trace, traceEvent, traceEventIO, traceId, traceIO, traceM, traceMarker, traceMarkerIO, traceShow, traceShowId, traceShowM, traceStack)
 
-import Prelude((^), ($!), Double, FilePath, Float, Fractional((/), recip, fromRational), fromIntegral, Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), Integer, IO, Num((+), (-), (*), abs, signum, fromInteger, negate), read, RealFrac(properFraction, truncate, round, ceiling, floor), seq, Show(show), subtract, String, undefined)
+import GHC.Base(($!), seq, String)
+import GHC.Err(undefined)
+import GHC.Float(Double, Float, Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh)
+import GHC.IO(FilePath, IO)
+import GHC.Num(Integer, Num((+), (-), (*), abs, signum, fromInteger, negate), subtract)
+import GHC.Real((^), Fractional((/), recip, fromRational), fromIntegral, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), RealFrac(properFraction, truncate, round, ceiling, floor))
+import GHC.Show(Show(show))
 
 import System.IO.Error(IOError, ioError, userError)
 
-import qualified Prelude
+import Text.Read(read)
 
 import qualified Data.Either      as Either
 import qualified Data.Foldable    as Foldable
@@ -37,19 +43,20 @@ import qualified Data.List        as List
 import qualified Data.Text        as Text
 import qualified Data.Text.IO     as TIO
 import qualified Data.Text.Read   as DTR
+import qualified GHC.Err          as Err
 import qualified System.Directory as SD
 import qualified System.IO        as SIO
 
 (|>) :: a -> (a -> b) -> b
 a |> f = f a
 
-asString :: Text -> Prelude.String
+asString :: Text -> String
 asString = Text.unpack
 
-asPath :: Text -> Prelude.FilePath
+asPath :: Text -> FilePath
 asPath = asString
 
-asText :: Prelude.String -> Text
+asText :: String -> Text
 asText = Text.pack
 
 showText :: Show a => a -> Text
@@ -59,10 +66,10 @@ concat :: (Foldable t, MonadPlus m) => t (m a) -> m a
 concat = Foldable.msum
 
 error :: Text -> a
-error = asString >>> Prelude.error
+error = asString >>> Err.error
 
-map :: (Prelude.Functor f) => (a -> b) -> f a -> f b
-map = Prelude.fmap
+map :: (Functor f) => (a -> b) -> f a -> f b
+map = fmap
 
 (<&>) :: Functor f => f a -> (a -> b) -> f b
 (<&>) = flip map
