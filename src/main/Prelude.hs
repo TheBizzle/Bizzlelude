@@ -1,5 +1,5 @@
 module Prelude((|>), (<&>), asPath, asString, asText, concat, error, groupOn, listDirsRecursively, map, putStrFlush, return', scalaGroupBy, showText, uncurry3, uncurry4, uncurry5, unsafeRead
-              , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
+  , module Control.Arrow, module Control.Applicative, module Control.Monad, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Semigroup, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
 
 import Control.Arrow((&&&), (***), (>>>))
 import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
@@ -17,8 +17,9 @@ import Data.Int(Int, Int8, Int16, Int32, Int64)
 import Data.IntSet(IntSet)
 import Data.Map(Map)
 import Data.Maybe(catMaybes, fromMaybe, isJust, isNothing, maybe, Maybe(Just, Nothing))
-import Data.Monoid((<>), Monoid(mappend, mempty))
+import Data.Monoid(Monoid(mappend, mempty))
 import Data.Ord(Ord((<), (<=), (>), (>=), compare, max, min), Ordering(EQ, GT, LT))
+import Data.Semigroup(Semigroup((<>)))
 import Data.Set(Set)
 import Data.Text(lines, Text, unlines, unwords, words)
 import Data.Tuple(curry, fst, snd, swap, uncurry)
