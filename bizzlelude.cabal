@@ -30,7 +30,6 @@ library
     -Wredundant-constraints
     -fno-warn-name-shadowing
     -funbox-strict-fields
-    -O2
   Build-depends:
     base-noprelude >= 4.8    && < 5,
     containers     >= 0.5.11 && < 0.6.0,
