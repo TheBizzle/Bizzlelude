@@ -1,4 +1,4 @@
-module Prelude((|>), (<&>), asPath, asString, asText, cartProduct, concat, error, groupOn, listDirsRecursively, map, pam, putStrFlush, return', scalaGroupBy, showText, uncurry3, uncurry4, uncurry5, unsafeRead
+module Prelude((|>), (<&>), asPath, asString, asText, cartProduct, concat, error, groupOn, listDirsRecursively, map, pam, putStrFlush, regexMatch, return', scalaGroupBy, showText, uncurry3, uncurry4, uncurry5, unsafeRead
   , module Control.Arrow, module Control.Applicative, module Control.Monad, module Control.Monad.IO.Class, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Semigroup, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
 
 import Control.Arrow((&&&), (***), (>>>))
@@ -40,6 +40,7 @@ import Numeric(Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin,
 import System.IO.Error(IOError, ioError, userError)
 
 import Text.Read(read)
+import Text.RegexPR(matchRegexPR)
 
 import qualified Data.Either      as Either
 import qualified Data.Foldable    as Foldable
@@ -82,6 +83,9 @@ pam   = flip map
 
 cartProduct :: [a] -> [b] -> [(a, b)]
 cartProduct xs ys = [(x, y) | x <- xs, y <- ys]
+
+regexMatch :: Text -> Text -> Maybe [Text]
+regexMatch regex = asString >>> (matchRegexPR $ asString regex) >>> (map $ snd >>> (map $ snd >>> asText))
 
 groupOn :: Ord criterion => (item -> criterion) -> [item] -> [[item]]
 groupOn f = sort >>> group
