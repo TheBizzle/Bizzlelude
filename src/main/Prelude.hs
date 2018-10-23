@@ -52,6 +52,7 @@ import qualified System.IO        as SIO
 
 (|>) :: a -> (a -> b) -> b
 a |> f = f a
+infixr 1 |>
 
 asString :: Text -> String
 asString = Text.unpack
