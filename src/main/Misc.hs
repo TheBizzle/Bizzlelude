@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (>>>), (>=>), asString, asPath, asText, showText, concat, error, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, unsafeRead, listDirsRecursively, uncurry5) where
+module Misc((|>), (>>>), (>=>), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, unsafeRead, listDirsRecursively, uncurry5) where
 
 import External
 
@@ -60,6 +60,9 @@ cartProduct xs ys = [(x, y) | x <- xs, y <- ys]
 
 regexMatch :: Text -> Text -> Maybe [Text]
 regexMatch regex = asString >>> (matchRegexPR $ asString regex) >>> (map $ snd >>> (map $ snd >>> asText))
+
+fromEither :: Either a a -> a
+fromEither = either id id
 
 groupOn :: Ord criterion => (item -> criterion) -> [item] -> [[item]]
 groupOn f = sort >>> group
