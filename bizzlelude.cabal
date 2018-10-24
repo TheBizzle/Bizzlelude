@@ -21,6 +21,7 @@ library
   exposed-modules:  Prelude
   default-extensions: OverloadedStrings
   default-language: Haskell2010
+  other-modules: External, Misc, Tuple2, Tuple3, Tuple4
   GHC-Options:
     -Wall
     -Wcompat
