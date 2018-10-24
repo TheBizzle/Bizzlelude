@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Tuple4(mapFst4, mapSnd4, mapThd4, mapFrt4, mapAllFour, mapFstF4, mapSndF4, mapThdF4, mapFrtF4, tuple4To5a, tuple4To5b, tuple4To5c, tuple4To5d, tuple4To5e, curry4, uncurry4, fst4, snd4, thd4, frt4) where
+module Tuple4(mapFst4, mapSnd4, mapThd4, mapFrt4, mapAll4, mapEach4, mapFstF4, mapSndF4, mapThdF4, mapFrtF4, tuple4To5a, tuple4To5b, tuple4To5c, tuple4To5d, tuple4To5e, curry4, uncurry4, fst4, snd4, thd4, frt4) where
 
 import External
 
@@ -19,8 +19,11 @@ mapThd4 f (a, b, c, d) = (a, b, f c, d)
 mapFrt4 :: (d -> x) -> (a, b, c, d) -> (a, b, c, x)
 mapFrt4 f (a, b, c, d) = (a, b, c, f d)
 
-mapAllFour :: (a -> x) -> (b -> y) -> (c -> z) -> (d -> l) -> (a, b, c, d) -> (x, y, z, l)
-mapAllFour f g h i (a, b, c, d) = (f a, g b, h c, i d)
+mapAll4 :: (a -> x) -> (a, a, a, a) -> (x, x, x, x)
+mapAll4 f (a, b, c, d) = (f a, f b, f c, f d)
+
+mapEach4 :: (a -> x) -> (b -> y) -> (c -> z) -> (d -> l) -> (a, b, c, d) -> (x, y, z, l)
+mapEach4 f g h i (a, b, c, d) = (f a, g b, h c, i d)
 
 mapFstF4 :: Functor f => (a -> f x) -> (a, b, c, d) -> f (x, b, c, d)
 mapFstF4 f (a, b, c, d) = (f a) <&> (\x -> (x, b, c, d))
