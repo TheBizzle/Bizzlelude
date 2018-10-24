@@ -1,9 +1,9 @@
-module Prelude((|>), (<&>), asPath, asString, asText, cartProduct, concat, curry3, curry4, error, frt4, fst3, fst4, groupOn, listDirsRecursively, map, mapAllFour, mapAllThree, mapBoth, mapFrt4, mapFrtF4, mapFst, mapFst3, mapFst4, mapFstF, mapFstF3, mapFstF4, mapSnd, mapSnd3, mapSnd4, mapSndF, mapSndF3, mapSndF4, mapThd3, mapThd4, mapThdF3, mapThdF4, pam, putStrFlush, regexMatch, return', scalaGroupBy, showText, snd3, snd4, thd3, thd4, tuple2To3a, tuple2To3b, tuple2To3c, tuple3To4a, tuple3To4b, tuple3To4c, tuple3To4d, tuple4To5a, tuple4To5b, tuple4To5c, tuple4To5d, tuple4To5e, uncurry3, uncurry4, uncurry5, unsafeRead
+module Prelude((|>), (<&>), (>>>), (>=>), asPath, asString, asText, cartProduct, concat, curry3, curry4, error, frt4, fst3, fst4, groupOn, listDirsRecursively, map, mapAllFour, mapAllThree, mapBoth, mapFrt4, mapFrtF4, mapFst, mapFst3, mapFst4, mapFstF, mapFstF3, mapFstF4, mapSnd, mapSnd3, mapSnd4, mapSndF, mapSndF3, mapSndF4, mapThd3, mapThd4, mapThdF3, mapThdF4, pam, putStrFlush, regexMatch, return', scalaGroupBy, showText, snd3, snd4, thd3, thd4, tuple2To3a, tuple2To3b, tuple2To3c, tuple3To4a, tuple3To4b, tuple3To4c, tuple3To4d, tuple4To5a, tuple4To5b, tuple4To5c, tuple4To5d, tuple4To5e, uncurry3, uncurry4, uncurry5, unsafeRead
   , module Control.Arrow, module Control.Applicative, module Control.Monad, module Control.Monad.IO.Class, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Semigroup, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
 
-import Control.Arrow((&&&), (***), (>>>))
+import Control.Arrow((&&&), (***))
 import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
-import Control.Monad((>=>), filterM, foldM, foldM_, forM, forM_, guard, join, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
+import Control.Monad(filterM, foldM, foldM_, forM, forM_, guard, join, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
 import Control.Monad.IO.Class(liftIO)
 
 import Data.Bifunctor(Bifunctor(bimap, first, second))
@@ -42,6 +42,8 @@ import System.IO.Error(IOError, ioError, userError)
 import Text.Read(read)
 import Text.RegexPR(matchRegexPR)
 
+import qualified Control.Arrow    as CArrow
+import qualified Control.Monad    as CMonad
 import qualified Data.Either      as Either
 import qualified Data.Foldable    as Foldable
 import qualified Data.List        as List
@@ -54,7 +56,15 @@ import qualified System.IO        as SIO
 
 (|>) :: a -> (a -> b) -> b
 a |> f = f a
-infixr 1 |>
+
+(>>>) :: (a -> b) -> (b -> c) -> (a -> c)
+(>>>) = (CArrow.>>>)
+
+(>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
+(>=>) = (CMonad.>=>)
+
+infixl 2 >>>, >=>
+infixl 1 |>
 
 asString :: Text -> String
 asString = Text.unpack
