@@ -1,6 +1,6 @@
 Name:                bizzlelude
-Version:             1.5.0
-Cabal-version:       1.22.0
+Version:             1.6.0
+Cabal-version:       1.22
 License:             BSD3
 License-File:        LICENSE.txt
 Author:              Jason Bertsche
