@@ -6,5 +6,7 @@
 
 /.ghci
 /.projections.json
+/stack.yaml.lock
+
 /.stack-work/
 /target/
