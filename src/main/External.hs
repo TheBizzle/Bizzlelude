@@ -1,5 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
-module External(module Control.Arrow, module Control.Applicative, module Control.Monad, module Control.Monad.IO.Class, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Semigroup, module Data.Set, module Data.Text, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Enum, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
+module External(module Control.Arrow, module Control.Applicative, module Control.Monad, module Control.Monad.IO.Class, module Data.Bifunctor, module Data.Bool, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Semigroup, module Data.Set, module Data.Text, module Data.Traversable, module Data.Tuple, module Debug.Trace, module GHC.Base, module GHC.Enum, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
 
 import Control.Arrow((&&&), (***))
 import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
@@ -23,6 +23,7 @@ import Data.Ord(Ord((<), (<=), (>), (>=), compare, max, min), Ordering(EQ, GT, L
 import Data.Semigroup(Semigroup((<>)))
 import Data.Set(Set)
 import Data.Text(lines, Text, unlines, unwords, words)
+import Data.Traversable(traverse)
 import Data.Tuple(curry, fst, snd, swap, uncurry)
 
 import Debug.Trace(trace, traceEvent, traceEventIO, traceId, traceIO, traceM, traceMarker, traceMarkerIO, traceShow, traceShowId, traceShowM, traceStack)
