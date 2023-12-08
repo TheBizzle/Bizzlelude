@@ -35,7 +35,7 @@ import GHC.Err(undefined)
 import GHC.Float(Double, Float)
 import GHC.IO(FilePath, IO)
 import GHC.Num(Integer, Num((+), (-), (*), abs, signum, fromInteger, negate), subtract)
-import GHC.Real((^), (^^), Fractional((/), recip, fromRational), fromIntegral, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), RealFrac(properFraction, truncate, round, ceiling, floor))
+import GHC.Real((^), (^^), Fractional((/), recip, fromRational), fromIntegral, Integral(quot, rem, div, mod, quotRem, divMod, toInteger), RealFrac(properFraction, truncate, round, ceiling, floor), Real(toRational))
 import GHC.Show(Show(show))
 
 import Numeric(Floating, pi, exp, log, sqrt, (**), logBase, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh)
