@@ -3,7 +3,7 @@ module External(module Control.Arrow, module Control.Applicative, module Control
 
 import Control.Arrow((&&&), (***))
 import Control.Applicative(Alternative((<|>)), Applicative((<*>), (<*), (*>), pure))
-import Control.Monad(filterM, foldM, foldM_, forM, forM_, guard, join, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
+import Control.Monad((=<<), filterM, foldM, foldM_, forM, forM_, guard, join, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
 import Control.Monad.IO.Class(liftIO)
 
 import Data.Bifunctor(Bifunctor(bimap, first, second))
