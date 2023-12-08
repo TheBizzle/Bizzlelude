@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (&>), (&>=), (>>>), (>=>), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, unsafeRead, listDirsRecursively, uncurry5) where
+module Misc((|>), (&>), (&>=), (>>>), (>=>), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5) where
 
 import External
 
@@ -84,6 +84,9 @@ scalaGroupBy f = (groupOn f) &> pair
 -- Hack to make GHCI print this before the prompt (JAB, 2/20/17)
 putStrFlush :: Text -> IO ()
 putStrFlush x = (TIO.putStr x) >>= (const $ SIO.hFlush SIO.stdout)
+
+traceLabel :: (Show a) => Text -> a -> a
+traceLabel label a = traceShow (label <> ": " <> (showText a)) a
 
 unsafeRead :: Integral a => Text -> a
 unsafeRead = DTR.decimal &> (Either.either (error "Well, that read *was* unsafe...") id) &> fst
