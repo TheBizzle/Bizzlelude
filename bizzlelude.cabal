@@ -1,11 +1,11 @@
-Cabal-Version:       3.8
+Cabal-Version:       3.6
 Name:                bizzlelude
-Version:             4.17.2.1
+Version:             4.17.2.2
 License:             BSD-3-Clause
 License-File:        LICENSE.txt
 Author:              Jason Bertsche
 Maintainer:          jason.bertsche@gmail.com
-Homepage:            http://github.com/TheBizzle
+Homepage:            https://github.com/TheBizzle
 Category:            Prelude
 Synopsis:            A lousy Prelude replacement by a lousy dude
 Description:         A lousy Prelude replacement by a lousy dude.  Imports common things while trying to avoid importing things that could cause naming conflicts.  Favors `Text` over `String`.  Wants using `IO` to be painful.
