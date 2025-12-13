@@ -1,10 +1,12 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (&>), (&>=), (>>>), (>=>), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5) where
+module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5) where
 
 import External
 
 import Data.Text.Encoding(decodeUtf8, encodeUtf8)
+
+import GHC.Real(Fractional((/)), realToFrac)
 
 import qualified Control.Arrow         as CArrow
 import qualified Control.Monad         as CMonad
@@ -19,6 +21,9 @@ import qualified GHC.Err               as Err
 import qualified System.Directory      as SD
 import qualified System.IO             as SIO
 import qualified Text.Regex.PCRE.Light as PCRE
+
+(/#) :: (Real a, Real b) => a -> b -> Double
+a /# b = (realToFrac a) / (realToFrac b)
 
 (|>) :: a -> (a -> b) -> b
 a |> f = f a
