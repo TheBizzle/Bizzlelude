@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5) where
+module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), aempty, asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5) where
 
 import External
 
@@ -8,6 +8,7 @@ import Data.Text.Encoding(decodeUtf8, encodeUtf8)
 
 import GHC.Real(Fractional((/)), realToFrac)
 
+import qualified Control.Applicative   as Apply
 import qualified Control.Arrow         as CArrow
 import qualified Control.Monad         as CMonad
 import qualified Data.Either           as Either
@@ -38,6 +39,9 @@ a |> f = f a
 
 infixl 2 >>>, >=>
 infixl 1 |>
+
+aempty :: Apply.Alternative f => f a
+aempty = Apply.empty
 
 asString :: Text -> String
 asString = Text.unpack
