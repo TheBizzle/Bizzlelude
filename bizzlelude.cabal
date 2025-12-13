@@ -20,7 +20,7 @@ library
   hs-source-dirs:   src/main
   exposed-modules:  Prelude, Data.Text.Word
   default-extensions: OverloadedStrings
-  default-language: Haskell2010
+  default-language: GHC2024
   other-modules: External, Misc, Tuple2, Tuple3, Tuple4
   GHC-Options:
     -Wall
