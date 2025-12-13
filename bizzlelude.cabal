@@ -18,7 +18,7 @@ source-repository head
 
 library
   hs-source-dirs:   src/main
-  exposed-modules:  Prelude
+  exposed-modules:  Prelude, Data.Text.Word
   default-extensions: OverloadedStrings
   default-language: Haskell2010
   other-modules: External, Misc, Tuple2, Tuple3, Tuple4
