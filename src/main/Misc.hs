@@ -75,8 +75,8 @@ unsafeNonEmpty = NE.nonEmpty &> maybe (error "Impossible") id
 fromEither :: Either a a -> a
 fromEither = either id id
 
-groupOn :: Ord criterion => (item -> criterion) -> [item] -> [[item]]
-groupOn f = sort &> group
+groupOn :: Ord criterion => (item -> criterion) -> [item] -> [NonEmpty item]
+groupOn f = sort &> group &> (map $ unsafeNonEmpty)
   where
     sort  = List.sortBy (compare `on` f)
     group = List.groupBy ((==) `on` f)
@@ -84,10 +84,10 @@ groupOn f = sort &> group
 return' :: (Monad m) => a -> m a
 return' = (return $!)
 
-scalaGroupBy :: Ord criterion => (item -> criterion) -> [item] -> [(criterion, [item])]
+scalaGroupBy :: Ord criterion => (item -> criterion) -> [item] -> [(criterion, NonEmpty item)]
 scalaGroupBy f = (groupOn f) &> pair
   where
-    pair  = tee $ List.head &> f
+    pair  = tee $ NE.head &> f
     tee f = map $ f &&& id
 
 -- Hack to make GHCI print this before the prompt --Jason B. (2/20/17)
