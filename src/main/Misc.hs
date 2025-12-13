@@ -4,19 +4,21 @@ module Misc((|>), (&>), (&>=), (>>>), (>=>), asString, asPath, asText, showText,
 
 import External
 
-import Text.RegexPR(matchRegexPR)
+import Data.Text.Encoding(decodeUtf8, encodeUtf8)
 
-import qualified Control.Arrow    as CArrow
-import qualified Control.Monad    as CMonad
-import qualified Data.Either      as Either
-import qualified Data.Foldable    as Foldable
-import qualified Data.List        as List
-import qualified Data.Text        as Text
-import qualified Data.Text.IO     as TIO
-import qualified Data.Text.Read   as DTR
-import qualified GHC.Err          as Err
-import qualified System.Directory as SD
-import qualified System.IO        as SIO
+import qualified Control.Arrow         as CArrow
+import qualified Control.Monad         as CMonad
+import qualified Data.Either           as Either
+import qualified Data.Foldable         as Foldable
+import qualified Data.List             as List
+import qualified Data.List.NonEmpty    as NE
+import qualified Data.Text             as Text
+import qualified Data.Text.IO          as TIO
+import qualified Data.Text.Read        as DTR
+import qualified GHC.Err               as Err
+import qualified System.Directory      as SD
+import qualified System.IO             as SIO
+import qualified Text.Regex.PCRE.Light as PCRE
 
 (|>) :: a -> (a -> b) -> b
 a |> f = f a
@@ -61,7 +63,14 @@ cartProduct :: [a] -> [b] -> [(a, b)]
 cartProduct xs ys = [(x, y) | x <- xs, y <- ys]
 
 regexMatch :: Text -> Text -> Maybe [Text]
-regexMatch regex = asString &> (matchRegexPR $ asString regex) &> (map $ snd &> (map $ snd &> asText))
+regexMatch regex text = map (map decodeUtf8) matched
+  where
+    compiled = PCRE.compile (encodeUtf8 regex) [PCRE.dotall, PCRE.multiline]
+    matchedL = PCRE.match compiled (encodeUtf8 text) []
+    matched  = map (unsafeNonEmpty &> NE.tail) matchedL
+
+unsafeNonEmpty :: [a] -> NonEmpty a
+unsafeNonEmpty = NE.nonEmpty &> maybe (error "Impossible") id
 
 fromEither :: Either a a -> a
 fromEither = either id id
