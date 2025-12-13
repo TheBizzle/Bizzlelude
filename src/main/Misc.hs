@@ -90,7 +90,7 @@ scalaGroupBy f = (groupOn f) &> pair
     pair  = tee $ List.head &> f
     tee f = map $ f &&& id
 
--- Hack to make GHCI print this before the prompt (JAB, 2/20/17)
+-- Hack to make GHCI print this before the prompt --Jason B. (2/20/17)
 putStrFlush :: Text -> IO ()
 putStrFlush x = (TIO.putStr x) >>= (const $ SIO.hFlush SIO.stdout)
 
