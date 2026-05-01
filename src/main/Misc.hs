@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), aempty, asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, length, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5, uncurry6) where
+module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), aempty, asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, length, orElse, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5, uncurry6) where
 
 import External
 
@@ -67,6 +67,9 @@ map = fmap
 pam, (<&>) :: Functor f => f a -> (a -> b) -> f b
 pam   = flip map
 (<&>) = flip map
+
+orElse :: Maybe a -> a -> a
+orElse m x = maybe x id m
 
 length :: Foldable t => t a -> Word
 length = Foldable.length &> fromIntegral
