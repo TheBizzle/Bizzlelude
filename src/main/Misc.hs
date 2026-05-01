@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), aempty, asString, asPath, asText, showText, concat, error, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, length, orElse, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5, uncurry6) where
+module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), aempty, asString, asPath, asText, showText, concat, error, failOrM, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, length, orElse, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5, uncurry6) where
 
 import External
 
@@ -67,6 +67,9 @@ map = fmap
 pam, (<&>) :: Functor f => f a -> (a -> b) -> f b
 pam   = flip map
 (<&>) = flip map
+
+failOrM :: Monad m => Validation f s1 -> (s1 -> m (Validation f s2)) -> m (Validation f s2)
+v `failOrM` vm = validation (Failure &> return) vm v
 
 orElse :: Maybe a -> a -> a
 orElse m x = maybe x id m
