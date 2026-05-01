@@ -6,7 +6,7 @@ import External
 
 import Data.Text.Encoding(decodeUtf8, encodeUtf8)
 
-import GHC.Real(Fractional((/)), realToFrac)
+import GHC.Real(Fractional((/)))
 
 import qualified Control.Applicative   as Apply
 import qualified Control.Arrow         as CArrow
