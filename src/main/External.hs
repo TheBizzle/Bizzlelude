@@ -1,5 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
-module External(module Control.Arrow, module Control.Applicative, module Control.Monad, module Control.Monad.IO.Class, module Control.Monad.State, module Data.Bifoldable, module Data.Bifunctor, module Data.Bool, module Data.ByteString, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.List.NonEmpty, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Semigroup, module Data.Set, module Data.Text, module Data.Traversable, module Data.Tuple, module Data.Type.Equality, module Data.Validation, module Data.Void, module Data.Word, module Debug.Trace, module GHC.Base, module GHC.Enum, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
+module External(module Control.Arrow, module Control.Applicative, module Control.Monad, module Control.Monad.IO.Class, module Control.Monad.State, module Data.Bifoldable, module Data.Bifunctor, module Data.Bool, module Data.ByteString, module Data.Char, module Data.Either, module Data.Eq, module Data.Foldable, module Data.Function, module Data.Functor, module Data.Int, module Data.IntSet, module Data.List, module Data.List.NonEmpty, module Data.Map, module Data.Maybe, module Data.Monoid, module Data.Ord, module Data.Semigroup, module Data.Set, module Data.Text, module Data.Traversable, module Data.Tuple, module Data.Type.Equality, module Data.Validation, module Data.Void, module Data.Word, module Debug.Trace, module GHC.Base, module GHC.Enum, module GHC.Err, module GHC.Float, module GHC.IO, module GHC.Num, module GHC.Real, module GHC.Show, module Numeric, module System.IO.Error, module Text.Read) where
 
 import Control.Arrow((&&&), (***))
 import Control.Applicative((<**>), Alternative((<|>), many, some), Applicative((<*>), (<*), (*>), pure), liftA2, optional)
@@ -19,6 +19,7 @@ import Data.Function(($), (.), const, flip, id, on)
 import Data.Functor((<$), (<$>), ($>), Functor(fmap), void)
 import Data.Int(Int, Int8, Int16, Int32, Int64)
 import Data.IntSet(IntSet)
+import Data.List((++))
 import Data.List.NonEmpty(nonEmpty, NonEmpty)
 import Data.Map(Map)
 import Data.Maybe(catMaybes, fromMaybe, isJust, isNothing, listToMaybe, maybe, maybeToList, Maybe(Just, Nothing))
