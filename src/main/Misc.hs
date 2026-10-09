@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
-module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), aempty, asString, asPath, asText, showText, concat, error, failOrM, fromEither, map, pam, (<&>), cartProduct, regexMatch, groupOn, length, orElse, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5, uncurry6) where
+module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), (|*>), (<*|), aempty, andIfValidMV, andIfValidV, asString, asPath, asText, showText, concat, error, fromEither, headMaybe, lastMaybe, map, pam, (<&>), cartProduct, regexMatch, groupOn, length, mapMSequA, orElse, return', scalaGroupBy, putStrFlush, traceLabel, unsafeRead, listDirsRecursively, uncurry5, uncurry6) where
 
 import External
 
@@ -40,6 +40,20 @@ a |> f = f a
 infixl 2 >>>, >=>
 infixl 1 |>
 
+(<*|) :: (Monad m, Applicative a) => m (a x) -> m (a x) -> m (a x)
+(<*|) a b =
+  do
+    va <- a
+    vb <- b
+    return $ va <* vb
+
+(|*>) :: (Monad m, Applicative a) => m (a x) -> m (a x) -> m (a x)
+(|*>) a b =
+  do
+    va <- a
+    vb <- b
+    return $ va *> vb
+
 aempty :: Apply.Alternative f => f a
 aempty = Apply.empty
 
@@ -68,11 +82,35 @@ pam, (<&>) :: Functor f => f a -> (a -> b) -> f b
 pam   = flip map
 (<&>) = flip map
 
-failOrM :: Monad m => Validation f s1 -> (s1 -> m (Validation f s2)) -> m (Validation f s2)
-v `failOrM` vm = validation (Failure &> return) vm v
+mapMSequA :: (Monad m, Applicative f, Traversable t) => (a -> m (f b)) -> t a -> m (f (t b))
+mapMSequA f xs =
+  do
+    resVs <- mapM f xs
+    return $ sequenceA resVs
+
+andIfValidV :: Monad m => Validation f s1 -> (s1 -> m (Validation f s2)) -> m (Validation f s2)
+v `andIfValidV` vm = validation (Failure &> return) vm v
+
+andIfValidMV :: Monad m => m (Validation f s1) -> (s1 -> m (Validation f s2)) -> m (Validation f s2)
+sVM `andIfValidMV` f =
+  do
+    sV <- sVM
+    sV `andIfValidV` f
 
 orElse :: Maybe a -> a -> a
 orElse m x = maybe x id m
+
+headMaybe :: Foldable t => t a -> Maybe a
+headMaybe = Foldable.toList &> helper
+  where
+    helper    [] = Nothing
+    helper (h:_) = Just h
+
+lastMaybe :: Foldable t => t a -> Maybe a
+lastMaybe = Foldable.toList &> helper
+  where
+    helper [] = Nothing
+    helper xs = Just $ List.last xs
 
 length :: Foldable t => t a -> Word
 length = Foldable.length &> fromIntegral

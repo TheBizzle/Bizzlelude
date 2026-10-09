@@ -5,7 +5,7 @@ import Control.Arrow((&&&), (***))
 import Control.Applicative((<**>), Alternative((<|>), many, some), Applicative((<*>), (<*), (*>), pure), liftA2, optional)
 import Control.Monad((=<<), filterM, foldM, foldM_, forM, forM_, guard, join, mapM, mapM_, Monad((>>), (>>=), return), MonadPlus(), sequence, sequence_, unless, when)
 import Control.Monad.IO.Class(liftIO)
-import Control.Monad.State(evalState, execState, mapState, runState, State, withState)
+import Control.Monad.State(evalState, execState, gets, mapState, modify, runState, State, withState)
 
 import Data.Bifoldable(Bifoldable, bifold, bifoldMap, bimapM_)
 import Data.Bifunctor(Bifunctor(bimap, first, second))
