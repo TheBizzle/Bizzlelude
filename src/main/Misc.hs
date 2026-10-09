@@ -88,7 +88,7 @@ regexMatch regex text = map (map decodeUtf8) matched
     matched  = map (unsafeNonEmpty &> NE.tail) matchedL
 
 unsafeNonEmpty :: [a] -> NonEmpty a
-unsafeNonEmpty = NE.nonEmpty &> maybe (error "Impossible") id
+unsafeNonEmpty = NE.nonEmpty &> maybe (error "`unsafeNonEmpty` is unsafe") id
 
 fromEither :: Either a a -> a
 fromEither = either id id
