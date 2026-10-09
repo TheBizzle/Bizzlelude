@@ -4,9 +4,9 @@ module Misc((|>), (&>), (&>=), (>>>), (>=>), (/#), (|*>), (<*|), aempty, andIfVa
 
 import External
 
-import Data.Text.Encoding(decodeUtf8, encodeUtf8)
-
 import GHC.Real(Fractional((/)))
+
+import Text.Regex.PCRE((=~))
 
 import qualified Control.Applicative   as Apply
 import qualified Control.Arrow         as CArrow
@@ -21,7 +21,6 @@ import qualified Data.Text.Read        as DTR
 import qualified GHC.Err               as Err
 import qualified System.Directory      as SD
 import qualified System.IO             as SIO
-import qualified Text.Regex.PCRE.Light as PCRE
 
 (/#) :: (Real a, Real b) => a -> b -> Double
 a /# b = (realToFrac a) / (realToFrac b)
@@ -119,11 +118,10 @@ cartProduct :: [a] -> [b] -> [(a, b)]
 cartProduct xs ys = [(x, y) | x <- xs, y <- ys]
 
 regexMatch :: Text -> Text -> Maybe [Text]
-regexMatch regex text = map (map decodeUtf8) matched
-  where
-    compiled = PCRE.compile (encodeUtf8 regex) [PCRE.dotall, PCRE.multiline]
-    matchedL = PCRE.match compiled (encodeUtf8 text) []
-    matched  = map (unsafeNonEmpty &> NE.tail) matchedL
+regexMatch regex text =
+  case (Text.unpack text) =~ ("(?sm)" <> Text.unpack regex) :: [[String]] of
+    []       -> Nothing
+    captures -> Just [Text.pack group | (_full : groups) <- captures, group <- groups]
 
 unsafeNonEmpty :: [a] -> NonEmpty a
 unsafeNonEmpty = NE.nonEmpty &> maybe (error "`unsafeNonEmpty` is unsafe") id
